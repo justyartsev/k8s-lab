@@ -1,0 +1,35 @@
+services:
+
+    writer:
+        build: writer
+        depends_on:
+          - redis
+          - rider
+        #stdin_open: true
+        #tty: true
+        environment:
+          - PYTHONUNBUFFERED=1
+    
+    rider:
+        build: rider
+        depends_on:
+          - redis
+        #stdin_open: true
+        #tty: true
+        environment:
+          - PYTHONUNBUFFERED=1
+    
+    redis: 
+        image: redis:latest
+        volumes:
+          - redis_data:/data
+        ports:
+          - "6379:6379"
+
+    redis-insight:
+        image: redis/redisinsight:latest
+        ports:
+          - "5540:5540"
+
+volumes:
+    redis_data: 
